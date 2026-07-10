@@ -36,7 +36,7 @@ function Sidebar() {
                         New Review
                     </NavLink>
 
-                    <NavLink to="/history" className={linkClass}>
+                    <NavLink to="/reviews" className={linkClass}>
                         Review History
                     </NavLink>
 

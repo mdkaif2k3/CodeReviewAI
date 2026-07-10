@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import NotFound from "./pages/NotFound";
 import Review from "./pages/Review";
 import History from "./pages/History";
+import ReviewDetails from "./pages/ReviewDetails";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
@@ -29,7 +30,9 @@ function App() {
 
                   <Route path="/review" element={ <Review /> } />
 
-                  <Route path="/history" element={ <History /> } />
+                  <Route path="/reviews" element={ <History /> } />
+
+                  <Route path="/reviews/:id" element={ <ReviewDetails /> } />
 
                   <Route path="/profile" element={ <Profile /> } />
 

@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
 
 import { getProjects } from "../services/projectService";
+import { uploadFile } from "../services/uploadService";
+import { createReview } from "../services/reviewService";
 
 import { REVIEW_TYPES, LANGUAGES } from "../utils/constants";
 
 function Review() {
+    const navigate = useNavigate();
+
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [formData, setFormData] = useState({
@@ -49,9 +54,41 @@ function Review() {
         });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
+        try {
+            if (!formData.projectId) {
+                return alert("Please select a project.");
+            }
+            if (!formData.file && !formData.code.trim()) {
+                return alert("Paste code or upload a file.");
+            }
+            if (formData.file) {
+                const uploadData = new FormData();
+                uploadData.append(
+                    "file",
+                    formData.file
+                );
+
+                uploadData.append(
+                    "projectId",
+                    formData.projectId
+                );
+                await uploadFile(uploadData);
+            }
+            await createReview({
+                projectId: Number(formData.projectId),
+                language: formData.language,
+                reviewType: formData.reviewType,
+            });
+            alert("Review created successfully.");
+            navigate("/reviews");
+        } catch (error) {
+            alert(
+                error.response?.data?.message ||
+                "Unable to create review."
+            );
+        }
     };
 
     return (
