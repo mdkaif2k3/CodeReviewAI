@@ -31,6 +31,12 @@ async function create(req, res) {
             review,
         });
     } catch (error) {
+
+        console.error("========== REVIEW ERROR ==========");
+        console.error(error);
+        console.error("==================================");
+
+
         return res.status(500).json({
             success: false,
             message: error.message,
@@ -69,6 +75,7 @@ async function getOne(req, res) {
             review,
         });
     } catch (error) {
+
         return res.status(500).json({
             success: false,
             message: error.message,

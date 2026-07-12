@@ -1,18 +1,91 @@
 const prisma = require("../config/prisma");
+const { analyzeCode } = require("./ai/aiService");
+const { readSourceFile } = require("../utils/fileReader");
 
 async function createReview({ projectId, language, reviewType}) {
-    const review = await prisma.review.create({
-        data: {
-            projectId,
-            language,
-            reviewType,
-            overallScore: 0,
-            summary: "Pending AI analysis...",
-        },
-    });
+    
+    let review;
 
-    return review;
-}
+    try {
+        review = await prisma.review.create({
+            data: {
+                projectId,
+                language,
+                reviewType,
+                overallScore: 0,
+                summary: "Pending AI analysis...",
+            },
+        });
+
+        await prisma.review.update({
+            where: {
+                id: review.id,
+            },
+            data: {
+                status: "PROCESSING",
+            },
+        });
+
+        const uploadedFile = await prisma.uploadedFile.findFirst({
+            where: {
+                projectId,
+            },
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+
+        const code = await readSourceFile(uploadedFile.path);
+        const aiResult = await analyzeCode({language, reviewType, code });
+
+        await prisma.review.update({
+            where: {
+                id: review.id,
+            },
+            data: {
+                overallScore: aiResult.overallScore,
+                summary: aiResult.summary,
+                status: "COMPLETED",
+            },
+        });
+
+        for (const finding of aiResult.findings) {
+            await prisma.reviewFinding.create({
+                data: {
+                    severity: finding.severity,
+                    issue: finding.issue,
+                    explanation: finding.explanation,
+                    suggestedFix: finding.suggestedFix,
+                    lineNumber: finding.lineNumber,
+                    reviewId:review.id,
+                },
+            });
+        }
+
+        return await prisma.review.findUnique({
+            where: {
+                id: review.id,
+            },
+            include: {
+                findings: true,
+                project: true,
+            },
+        });
+    } catch (error) {
+        if (review) {
+            await prisma.review.update({
+                where: {
+                    id: review.id,
+                },
+                data: {
+                    status: "FAILED",
+                    summary: error.message,
+                },
+            });
+        }
+        throw error;
+    }
+} 
 
 async function getReviews(userId) {
     return await prisma.review.findMany({

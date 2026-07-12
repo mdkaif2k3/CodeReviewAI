@@ -31,9 +31,22 @@ function History() {
                 <p className="text-slate-400">{review.reviewType}</p>
               </div>
               <div>
-                <p className="text-white">
-                  Score
-                  {review.overallScore}
+                <h2 className="font-bold text-white">
+                {review.project.name}
+                </h2>
+                <p className="text-slate-400">
+                {review.language}
+                </p>
+                <p className="text-slate-400">
+                {review.reviewType}
+                </p>
+                </div>
+                <div className="text-right">
+                <p className="text-green-400 font-bold">
+                {review.overallScore}/100
+                </p>
+                <p className="text-sm text-slate-400">
+                {review.status}
                 </p>
                 <Link to={`/reviews/${review.id}`} className="text-blue-400">
                   View Details
