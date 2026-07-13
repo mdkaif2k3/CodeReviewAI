@@ -41,6 +41,14 @@ function ReviewDetails() {
       }
     };
 
+    function getScoreRating(score) {
+        if (score >= 95) return "Production Ready";
+        if (score >= 85) return "Excellent";
+        if (score >= 75) return "Good";
+        if (score >= 60) return "Needs Improvement";
+        return "Major Problems";
+    }
+
     return (
       <div>
         <Card>
@@ -49,6 +57,7 @@ function ReviewDetails() {
             <h2 className="text-5xl font-bold text-green-400">
               {review.overallScore}/100
             </h2>
+            <p>{getScoreRating(review.overallScore)}</p>
             <p className="text-slate-300">Overall Score</p>
           </div>
         </Card>
@@ -61,6 +70,38 @@ function ReviewDetails() {
           <p className="text-slate-300 leading-7">{review.summary}</p>
         </Card>
         <Card>
+          <h2 className="text-2xl font-bold text-white mb-4">Strengths</h2>
+          {review.strengths?.length ? (
+            <ul className="space-y-3">
+              {review.strengths.map((strength, index) => (
+                <li key={index} className="text-green-400 flex gap-2">
+                  <span>✓</span>
+                  <span>{strength}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-slate-400">No strengths available.</p>
+          )}
+        </Card>
+        <Card>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            Recommendations
+          </h2>
+          {review.recommendations?.length ? (
+            <ul className="space-y-3">
+              {review.recommendations.map((recommendation, index) => (
+                <li key={index} className="text-blue-300 flex gap-2">
+                  <span>•</span>
+                  <span>{recommendation}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-slate-400">No recommendations available.</p>
+          )}
+        </Card>
+        <Card>
           <h2 className="text-2xl font-bold text-white mb-6">
             Review Findings
           </h2>
@@ -68,7 +109,10 @@ function ReviewDetails() {
             <p className="text-slate-400">No issues found.</p>
           ) : (
             review.findings.map((finding) => (
-              <div key={finding.id} className="mb-6 border-b border-slate-700 pb-6">
+              <div
+                key={finding.id}
+                className="mb-6 border-b border-slate-700 pb-6"
+              >
                 <h3 className="text-xl font-semibold text-white">
                   {finding.issue}
                 </h3>
@@ -89,7 +133,9 @@ function ReviewDetails() {
             ))
           )}
         </Card>
-        
+        <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full">
+            {review.status}
+        </span>
       </div>
     );
 }

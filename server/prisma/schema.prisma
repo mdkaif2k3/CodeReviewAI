@@ -58,6 +58,11 @@ model Review {
 
   findings ReviewFinding[]
 
+  strengths Json?
+
+  recommendations Json?
+
+
   createdAt DateTime @default(now())
 }
 

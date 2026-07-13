@@ -1,0 +1,1 @@
+module.exports = { model: "llama-3.3-70b-versatile", temperature: 0.2, maxRetries: 2 };

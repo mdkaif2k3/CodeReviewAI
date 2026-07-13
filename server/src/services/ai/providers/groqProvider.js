@@ -1,4 +1,5 @@
 const OpenAI = require("openai");
+const aiConfig = require("../../config/ai");
 
 const client = new OpenAI({
     apiKey: process.env.GROQ_API_KEY,
@@ -6,21 +7,21 @@ const client = new OpenAI({
     baseURL: "https://api.groq.com/openai/v1",
 });
 
-async function generateCompletion(prompt) {
+async function generateCompletion(systemPrompt, userPrompt) {
     const response = await client.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
-        temperature: 0.2,
+        model:  aiConfig.model,
+        temperature: aiConfig.temperature,
         response_format: {
             type: "json_object",
         },
         messages: [
             {
                 role: "system",
-                content: "You are a professional senior software engineer who reviews source code.",
+                content: systemPrompt,
             },
             {
                 role: "user",
-                content: prompt,
+                content: userPrompt,
             },
         ],
     });
