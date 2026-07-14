@@ -5,6 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 const app = express();
 
@@ -21,5 +22,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/upload", uploadRoutes)
 app.use("/api/reviews", reviewRoutes)
+app.use("/api/dashboard", dashboardRoutes);
 
 module.exports = app;

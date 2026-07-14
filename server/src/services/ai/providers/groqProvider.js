@@ -1,5 +1,5 @@
 const OpenAI = require("openai");
-const aiConfig = require("../../config/ai");
+const aiConfig = require("../../../config/ai");
 
 const client = new OpenAI({
     apiKey: process.env.GROQ_API_KEY,
