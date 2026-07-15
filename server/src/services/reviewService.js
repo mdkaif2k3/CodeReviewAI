@@ -87,19 +87,69 @@ async function createReview({ projectId, language, reviewType}) {
     }
 } 
 
-async function getReviews(userId) {
-    return await prisma.review.findMany({
-        where: {
-            project: {
-                userId,
-            },
+async function getReviews({ userId, search = "", language, reviewType, status, sort = "newest" }) {
+    const where = {
+        project: {
+            userId,
         },
+    };
+
+    if (search) {
+        where.OR = [
+            {
+                project: {
+                    name: {
+                        contains: search,
+                        mode: "insensitive",
+                    },
+                },
+            },
+            {
+                summary: {
+                    contains: search,
+                    mode: "insensitive",
+                },
+            },
+        ];
+    }
+
+    if (language) {
+        where.language = language;
+    }
+
+    if (reviewType) {
+        where.reviewType = reviewType;
+    }
+
+    if (status) {
+        where.status = status;
+    }
+
+    let orderBy = { createdAt: "desc" };
+    switch (sort) {
+        case "oldest":
+            orderBy = {
+                createdAt: "asc",
+            };
+            break;
+        case "score_desc":
+            orderBy = {
+                overallScore: "desc",
+            };
+            break;
+        case "score_asc":
+            orderBy = {
+                overallScore: "asc",
+            };
+            break;
+    }
+
+    return await prisma.review.findMany({
+        where,
         include: {
             project: true,
         },
-        orderBy: {
-            createdAt: "desc",
-        },
+        orderBy,
     });
 }
 

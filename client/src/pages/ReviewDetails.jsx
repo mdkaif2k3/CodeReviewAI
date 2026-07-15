@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { exportReviewPDF } from "../utils/pdfGenerator";
 
 import api from "../services/api";
 
@@ -53,6 +54,9 @@ function ReviewDetails() {
       <div>
         <Card>
           <h1 className="text-3xl font-bold text-white mb-6">AI Code Review</h1>
+          <button onClick={() => exportReviewPDF(review)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">
+              Export PDF
+          </button>
           <div className="space-y-3">
             <h2 className="text-5xl font-bold text-green-400">
               {review.overallScore}/100

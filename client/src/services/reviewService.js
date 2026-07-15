@@ -6,8 +6,7 @@ export const createReview = async (reviewData) => {
     return response.data;
 };
 
-export const getReviewHistory = async () => {
-    const response = await api.get("/reviews");
-
+export async function getReviewHistory(filters = {}) {
+    const response = await api.get("/reviews", { params: filters });
     return response.data;
-};
+}

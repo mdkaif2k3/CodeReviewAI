@@ -46,13 +46,22 @@ async function create(req, res) {
 
 async function getAll(req, res) {
     try {
-        const reviews = await getReviews(req.user.id);
+        const reviews = await getReviews({
+            userId: req.user.id,
+            search: req.query.search,
+            language: req.query.language,
+            reviewType: req.query.reviewType,
+            status: req.query.status,
+            sort: req.query.sort,
+        });
 
         return res.status(200).json({
             success: true,
             reviews,
         });
-    } catch (error) {
+    }
+    catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             message: error.message,
