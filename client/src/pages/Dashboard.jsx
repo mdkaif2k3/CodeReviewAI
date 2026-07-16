@@ -58,7 +58,7 @@ function Dashboard() {
     return (
         <div className="space-y-8">
             <h1 className="text-3xl font-bold">
-                AI Code Review Dashboard
+                Dashboard
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -151,7 +151,7 @@ function Dashboard() {
                                     <div className="text-right">
                                         <span className={`text-xl font-bold ${getScoreColor(review.overallScore)}`}>
                                             {review.overallScore}/100
-                                        </span>
+                                        </span> <br />
                                         <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(review.status)}`}>
                                             {review.status}
                                         </span>

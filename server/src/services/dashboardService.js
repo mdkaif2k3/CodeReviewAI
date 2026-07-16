@@ -94,7 +94,7 @@ async function getDashboard(userId) {
         orderBy: {
             createdAt: "desc",
         },
-        take: 5,
+        take: 3,
     });
 
     return {
