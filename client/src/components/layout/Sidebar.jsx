@@ -32,6 +32,10 @@ function Sidebar() {
                         Dashboard
                     </NavLink>
 
+                    <NavLink to="/projects" className={linkClass}>
+                        Projects
+                    </NavLink>
+
                     <NavLink to="/review" className={linkClass}>
                         New Review
                     </NavLink>

@@ -1,4 +1,4 @@
-const { createReview, getReviews, getReviewById } = require("../services/reviewService");
+const { createReview, getReviews, getReviewById, deleteReview } = require("../services/reviewService");
 const { getProjectById } = require("../services/projectService");
 
 async function create(req, res) {
@@ -92,4 +92,19 @@ async function getOne(req, res) {
     }
 }
 
-module.exports = { create, getAll, getOne };
+async function del(req, res) {
+    try {
+        const result = await deleteReview(
+            Number(req.params.id),
+            req.user.id
+        );
+
+        return res.status(200).json(result);
+    } catch (error) {
+        return res.status(404).json({
+            message: error.message,
+        });
+    }
+}
+
+module.exports = { create, getAll, getOne, del };

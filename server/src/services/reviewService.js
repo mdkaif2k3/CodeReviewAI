@@ -168,4 +168,29 @@ async function getReviewById(id, userId) {
     });
 }
 
-module.exports = { createReview, getReviews, getReviewById };
+async function deleteReview(id, userId) {
+    const review = await prisma.review.findFirst({
+        where: {
+            id,
+            project: {
+                userId,
+            },
+        },
+    });
+
+    if (!review) {
+        throw new Error("Review not found.");
+    }
+
+    await prisma.review.delete({
+        where: {
+            id,
+        },
+    });
+
+    return {
+        message: "Review deleted successfully.",
+    };
+}
+
+module.exports = { createReview, getReviews, getReviewById, deleteReview };

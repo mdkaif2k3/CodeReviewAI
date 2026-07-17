@@ -51,18 +51,18 @@ function ReviewDetails() {
     }
 
     return (
-      <div>
+      <div className="space-y-6">
         <Card>
           <h1 className="text-3xl font-bold text-white mb-6">AI Code Review</h1>
-          <button onClick={() => exportReviewPDF(review)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded text-white">
+          <button onClick={() => exportReviewPDF(review)} className="px-4 py-2 mb-6 bg-blue-600 hover:bg-blue-700 rounded text-white">
               Export PDF
           </button>
           <div className="space-y-3">
+            <p className="text-slate-300">Overall Score</p>
             <h2 className="text-5xl font-bold text-green-400">
               {review.overallScore}/100
             </h2>
             <p>{getScoreRating(review.overallScore)}</p>
-            <p className="text-slate-300">Overall Score</p>
           </div>
         </Card>
         <Card>

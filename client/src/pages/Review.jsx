@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
@@ -92,82 +92,109 @@ function Review() {
     };
 
     return (
-
-    <div className="max-w-5xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         <Card>
-            <h1 className="text-3xl font-bold text-white mb-8">
-                Start a New AI Code Review
-            </h1>
+          <h1 className="text-3xl font-bold text-white mb-8">
+            Start a New AI Code Review
+          </h1>
+
+          {!loading && projects.length === 0 && (
+            <Card>
+              <div className="py-12 text-center">
+                <div className="text-6xl mb-4">📁</div>
+                <h2 className="text-2xl font-bold text-white">
+                  No Projects Found
+                </h2>
+                <p className="mt-3 text-slate-400">
+                  Create your first project before generating an AI code review.
+                </p>
+                <Link
+                  to="/projects"
+                  className="inline-block mt-8 rounded-lg bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700"
+                >
+                  Go to Projects
+                </Link>
+              </div>
+            </Card>
+          )}
+          {projects.length > 0 && (
             <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                    <label className="text-white">
-                    Project
-                    </label>
-                    <select name="projectId" value={formData.projectId} onChange={handleChange} className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white">
-                        <option value="">
-                            Select Project
-                        </option>
-                        {projects.map(project => (
-                        <option key={project.id} value={project.id}>
-                        {project.name}
-                        </option>
-                        ))}
-                    </select>
-                </div>
+              <div>
+                <label className="text-white">Project</label>
+                <select
+                  name="projectId"
+                  value={formData.projectId}
+                  onChange={handleChange}
+                  className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white"
+                >
+                  <option value="">Select Project</option>
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-white">Review Type</label>
+                <select
+                  name="reviewType"
+                  value={formData.reviewType}
+                  onChange={handleChange}
+                  className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white"
+                >
+                  {REVIEW_TYPES.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-white">Language</label>
+                <select
+                  name="language"
+                  value={formData.language}
+                  onChange={handleChange}
+                  className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white"
+                >
+                  {LANGUAGES.map((language) => (
+                    <option key={language} value={language}>
+                      {language}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-white">Paste Code</label>
+                <textarea
+                  name="code"
+                  rows="12"
+                  value={formData.code}
+                  onChange={handleChange}
+                  placeholder="Paste your source code here..."
+                  className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-4 text-white"
+                ></textarea>
+              </div>
+              <div>
+                <label className="text-white">Upload Source File</label>
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  className="block mt-2 text-white"
+                />
+                {formData.file && (
+                  <p className="text-slate-400 mt-2">
+                    Selected: {formData.file.name}
+                  </p>
+                )}
+              </div>
 
-                <div>
-                    <label className="text-white">
-                        Review Type
-                    </label>
-                    <select name="reviewType" value={formData.reviewType} onChange={handleChange} className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white">
-                        {REVIEW_TYPES.map(type => (
-                        <option key={type} value={type}>
-                        {type}
-                        </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="text-white">
-                        Language
-                    </label>
-                    <select name="language" value={formData.language} onChange={handleChange} className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-3 text-white">
-                        {LANGUAGES.map(language => (
-                        <option key={language} value={language}>
-                        {language}
-                        </option>
-                        ))}
-                    </select>
-                </div>
-
-                <div>
-                    <label className="text-white">
-                        Paste Code
-                    </label>
-                    <textarea name="code" rows="12" value={formData.code} onChange={handleChange} placeholder="Paste your source code here..." className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-4 text-white"></textarea>
-                </div>
-
-                <div>
-                    <label className="text-white">
-                        Upload Source File
-                    </label>
-                    <input type="file" onChange={handleFileChange} className="block mt-2 text-white" />
-                    {formData.file && (
-                    <p className="text-slate-400 mt-2">
-                        Selected:
-                        {" "}
-                        {formData.file.name}
-                    </p>
-                    )}
-                </div>
-
-                <Button type="submit">
-                Analyze Code
-                </Button>
+              <Button type="submit">Analyze Code</Button>
             </form>
+          )}
         </Card>
-    </div>
+      </div>
     );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "../components/common/Card";
-import { getReviewHistory } from "../services/reviewService";
+import { getReviewHistory, deleteReview } from "../services/reviewService";
 
 function History() {
     const [reviews, setReviews] = useState([]);
@@ -32,6 +32,29 @@ function History() {
             console.error(error);
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function handleDeleteReview(id) {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this review?"
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            await deleteReview(id);
+
+            await loadReviews();
+
+            alert("Review deleted successfully.");
+        } catch (error) {
+            alert(
+                error.response?.data?.message ||
+                "Unable to delete review."
+            );
         }
     }
 
@@ -116,6 +139,9 @@ function History() {
                             {review.summary.length > 120 ? review.summary.substring(0, 120) + "..." : review.summary}
                         </p>
                         <div className="mt-4">
+                            <button onClick={() => handleDeleteReview(review.id)} className="rounded-lg bg-red-600 px-4 py-2 mr-4 text-white transition hover:bg-red-700">
+                                Delete
+                            </button>
                             <Link to={`/reviews/${review.id}`} className="text-blue-400 hover:text-blue-300">
                                 View Details →
                             </Link>
