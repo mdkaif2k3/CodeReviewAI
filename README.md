@@ -1,7 +1,7 @@
 # CodeLens AI
 
 > **An AI-Powered Code Review Platform built with the MERN Stack and
-> Google Gemini AI**
+> Groq AI**
 
 CodeLens AI is a full-stack web application that helps developers
 analyze source code using AI. Users can create projects, paste code or
@@ -58,7 +58,7 @@ Hot Toast - Recharts - jsPDF
 **Backend** - Node.js - Express.js - Prisma ORM - PostgreSQL - JWT -
 bcrypt
 
-**AI** - Google Gemini API
+**AI** - Groq API
 
 ## ⚙️ Installation
 
