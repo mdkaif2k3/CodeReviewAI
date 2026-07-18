@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
@@ -23,6 +24,9 @@ function Review() {
         file: null,
     });
     const [error, setError] = useState("");
+
+    const hasCode = formData.code.trim().length > 0;
+    const hasFile = Boolean(formData.file);
 
     useEffect(() => {
         loadProjects();
@@ -58,10 +62,10 @@ function Review() {
         event.preventDefault();
         try {
             if (!formData.projectId) {
-                return alert("Please select a project.");
+                return toast.error("Please select a project.");
             }
             if (!formData.file && !formData.code.trim()) {
-                return alert("Paste code or upload a file.");
+                return toast.error("Paste code or upload a file.");
             }
             if (formData.file) {
                 const uploadData = new FormData();
@@ -80,11 +84,12 @@ function Review() {
                 projectId: Number(formData.projectId),
                 language: formData.language,
                 reviewType: formData.reviewType,
+                code: formData.code,
             });
-            alert("Review created successfully.");
+            toast.success("Review created successfully.");
             navigate("/reviews");
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Unable to create review."
             );
@@ -172,21 +177,53 @@ function Review() {
                   rows="12"
                   value={formData.code}
                   onChange={handleChange}
-                  placeholder="Paste your source code here..."
+                  placeholder={`${hasFile ? "Cannot access.. File uploaded" : "Paste your source code here..."}`}
                   className="w-full mt-2 rounded-lg bg-slate-800 border border-slate-700 p-4 text-white"
+                  disabled={hasFile}
                 ></textarea>
               </div>
               <div>
-                <label className="text-white">Upload Source File</label>
+                <label
+                  htmlFor="source-file"
+                  className={`mt-2 flex flex-col items-center justify-center rounded-lg border-2 border-dashed p-6 cursor-pointer transition
+                ${
+                  hasCode
+                    ? "border-gray-700 bg-gray-800 text-gray-500 cursor-not-allowed"
+                    : "border-cyan-500 hover:border-cyan-400 hover:bg-slate-800 text-white"
+                }`}
+                >
+                  <span className="text-3xl">📄</span>
+                  <span className="mt-2 font-semibold">Choose Source File</span>
+                  <span className="text-sm text-gray-400">
+                    Click to upload your source code
+                  </span>
+                </label>
                 <input
+                  id="source-file"
                   type="file"
                   onChange={handleFileChange}
-                  className="block mt-2 text-white"
+                  className="hidden"
+                  disabled={hasCode}
                 />
                 {formData.file && (
-                  <p className="text-slate-400 mt-2">
-                    Selected: {formData.file.name}
-                  </p>
+                  <div className="mt-3 rounded-lg bg-slate-800 p-3 flex justify-between items-center">
+                  <span className="text-green-400">
+                      ✓ {formData.file.name}
+                  </span>
+
+                  <button
+                      type="button"
+                      onClick={() =>
+                          setFormData(prev => ({
+                              ...prev,
+                              file: null,
+                          }))
+                      }
+                      className="text-red-400 hover:text-red-300"
+                    >
+                        Remove
+                    </button>
+                </div>
                 )}
               </div>
 

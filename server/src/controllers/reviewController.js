@@ -3,7 +3,7 @@ const { getProjectById } = require("../services/projectService");
 
 async function create(req, res) {
     try {
-        const { projectId, language, reviewType } = req.body;
+        const { projectId, language, reviewType, code } = req.body;
 
         if (!projectId || !language || !reviewType) {
             return res.status(400).json({
@@ -24,6 +24,7 @@ async function create(req, res) {
             projectId: Number(projectId),
             language,
             reviewType,
+            code,
         });
         return res.status(201).json({
             success: true,

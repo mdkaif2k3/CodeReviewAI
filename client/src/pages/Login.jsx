@@ -46,7 +46,7 @@ function Login() {
         <div className="min-h-screen bg-slate-950 flex justify-center items-center">
             <Card className="w-full max-w-md">
                 <h1 className="text-3xl font-bold text-white text-center">
-                    AI Code Review Assistant
+                    CodeSentry AI
                 </h1>
                 <p className="text-slate-400 text-center mt-2 mb-8">
                     Review your code using AI

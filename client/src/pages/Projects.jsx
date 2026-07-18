@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
@@ -22,7 +23,7 @@ function Projects() {
             const data = await getProjects();
             setProjects(data.projects);
         } catch (error) {
-            alert("Unable to load projects.");
+            toast.error("Unable to load projects.");
         } finally {
             setLoading(false);
         }
@@ -33,9 +34,9 @@ function Projects() {
             await createProject(projectData);
             setShowModal(false);
             loadProjects();
-            alert("Project created successfully.");
+            toast.success("Project created successfully.");
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Unable to create project."
             );
@@ -52,9 +53,9 @@ function Projects() {
         try {
             await deleteProject(id);
             loadProjects();
-            alert("Project deleted successfully.");
+            toast.success("Project deleted successfully.");
         } catch (error) {
-            alert(
+            toast.error(
                 error.response?.data?.message ||
                 "Unable to delete project."
             );

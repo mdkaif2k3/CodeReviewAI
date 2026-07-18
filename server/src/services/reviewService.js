@@ -2,7 +2,7 @@ const prisma = require("../config/prisma");
 const { analyzeCode } = require("./ai/aiService");
 const { readSourceFile } = require("../utils/fileReader");
 
-async function createReview({ projectId, language, reviewType}) {
+async function createReview({ projectId, language, reviewType, code }) {
     
     let review;
 
@@ -25,18 +25,26 @@ async function createReview({ projectId, language, reviewType}) {
                 status: "PROCESSING",
             },
         });
+        let sourceCode = code;
 
-        const uploadedFile = await prisma.uploadedFile.findFirst({
-            where: {
-                projectId,
-            },
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
+        if (!sourceCode || !sourceCode.trim()) {
+            const uploadedFile = await prisma.uploadedFile.findFirst({
+                where: {
+                    projectId,
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
+            });
 
-        const code = await readSourceFile(uploadedFile.path);
-        const aiResult = await analyzeCode({language, reviewType, code });
+            if (!uploadedFile) {
+                throw new Error("Please paste code or upload a source file.");
+            }
+
+            sourceCode = await readSourceFile(uploadedFile.path);
+        }
+
+        const aiResult = await analyzeCode({ language, reviewType, code: sourceCode });
 
         await prisma.review.update({
             where: {

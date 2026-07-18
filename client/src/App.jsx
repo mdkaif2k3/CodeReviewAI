@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import DashboardLayout from "./layouts/DashboardLayout";
+import { Toaster } from "react-hot-toast";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -16,35 +17,66 @@ import PublicRoute from "./routes/PublicRoute";
 
 function App() {
     return (
+      <>
+        <Toaster position="top-right"
+          toastOptions={{
+            duration: 3000,
+            style: {
+              background: "#1e293b",
+              color: "#fff",
+              border: "1px solid #334155",
+            },
+          }}
+        />
         <BrowserRouter>
-            <Routes>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
 
-                <Route path="/" element={ <Navigate to="/login" replace /> } />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  {" "}
+                  <Login />{" "}
+                </PublicRoute>
+              }
+            />
 
-                <Route path="/login" element={ <PublicRoute> <Login /> </PublicRoute>} />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  {" "}
+                  <Register />{" "}
+                </PublicRoute>
+              }
+            />
 
-                <Route path="/register" element={ <PublicRoute> <Register /> </PublicRoute> } />
+            <Route
+              element={
+                <ProtectedRoute>
+                  {" "}
+                  <DashboardLayout />{" "}
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />} />
 
-                <Route element={ <ProtectedRoute> <DashboardLayout /> </ProtectedRoute> } >
-                  
-                  <Route path="/dashboard" element={ <Dashboard /> } />
+              <Route path="/projects" element={<Projects />} />
 
-                  <Route path="/projects" element={<Projects />} />
+              <Route path="/review" element={<Review />} />
 
-                  <Route path="/review" element={ <Review /> } />
+              <Route path="/reviews" element={<History />} />
 
-                  <Route path="/reviews" element={ <History /> } />
+              <Route path="/reviews/:id" element={<ReviewDetails />} />
 
-                  <Route path="/reviews/:id" element={ <ReviewDetails /> } />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
 
-                  <Route path="/profile" element={ <Profile /> } />
-
-                </Route>
-                
-                <Route path="*" element={ <NotFound /> } />
-
-            </Routes>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </BrowserRouter>
+      </>
     );
 }
 

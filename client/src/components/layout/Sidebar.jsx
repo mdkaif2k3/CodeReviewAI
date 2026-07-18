@@ -24,7 +24,7 @@ function Sidebar() {
         <aside className="flex min-h-screen w-64 flex-col justify-between border-r border-slate-800 bg-slate-900 p-6">
             <div>
                 <h1 className="mb-10 text-2xl font-bold text-white">
-                    AI Code Review
+                    CodeSentry AI
                 </h1>
 
                 <nav className="space-y-2">
