@@ -3,7 +3,7 @@
 > **An AI-Powered Code Review Platform built with the MERN Stack and
 > Groq AI**
 
-CodeLens AI is a full-stack web application that helps developers
+CodeSentry AI is a full-stack web application that helps developers
 analyze source code using AI. Users can create projects, paste code or
 upload source files, receive AI-generated code reviews with detailed
 findings, visualize analytics through an interactive dashboard, and
@@ -63,8 +63,8 @@ bcrypt
 ## ⚙️ Installation
 
 ``` bash
-git clone https://github.com/yourusername/CodeLens-AI.git
-cd CodeLens-AI
+git clone https://github.com/yourusername/CodeReviewAI.git
+cd CodeReviewAI
 
 cd server
 npm install
