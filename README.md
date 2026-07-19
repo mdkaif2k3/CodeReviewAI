@@ -1,4 +1,4 @@
-# CodeLens AI
+# CodeSentry AI
 
 > **An AI-Powered Code Review Platform built with the MERN Stack and
 > Groq AI**
